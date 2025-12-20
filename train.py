@@ -107,8 +107,8 @@ def main(args):
     # --- Optimizer & Scheduler ---
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
-    # Decay LR by factor of 0.1 every 7 epochs
-    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
+    # --- Cosine Annealing ---
+    scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs, eta_min=1e-6)
 
     # --- Training Loop ---
     best_val_loss = float('inf')

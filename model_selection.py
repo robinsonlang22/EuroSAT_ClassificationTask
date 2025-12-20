@@ -83,7 +83,7 @@ def tuning_runner(data_root, split_dir, device):
         print(f"    --> Best Val Loss: {best_val_loss_this_run:.4f}")
 
     # Report
-    print("\n\n🏆 ================= TUNING REPORT ================= 🏆")
+    print("\n\n ================= TUNING REPORT ================= ")
     df = pd.DataFrame(results)
     df_sorted = df.sort_values(by='best_val_loss', ascending=True)
     print(df_sorted.to_string(index=False))
