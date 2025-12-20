@@ -142,9 +142,6 @@ def main(args):
             best_val_loss = val_loss
             torch.save(model.state_dict(), os.path.join(args.save_dir, "best_model.pth"))
     
-    # Optional: Save last model
-    torch.save(model.state_dict(), os.path.join(args.save_dir, "last_model.pth"))
-    
     writer.close()
     print(f"Training finished. Best model at: {os.path.join(args.save_dir, 'best_model.pth')}")
 
