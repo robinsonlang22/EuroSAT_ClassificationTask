@@ -112,7 +112,7 @@ def main(args):
 
     # --- Training Loop ---
     best_val_loss = float('inf')
-    print(f"🔥 Starting training for {args.epochs} epochs...")
+    print(f" Starting training for {args.epochs} epochs...")
     
     for epoch in range(1, args.epochs + 1):
         # Train & Validate
