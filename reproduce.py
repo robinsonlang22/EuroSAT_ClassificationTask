@@ -8,20 +8,19 @@ from tqdm import tqdm
 def check_reproducibility(args):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
-    # 1. 检查文件是否存在
+    # 1. checking  Logits
     if not os.path.exists(args.saved_logits):
         print(f" Error: Saved logits not found at {args.saved_logits}")
-        print(" Please run generate_submission.py first!")
+        print(" Please run test.py first!")
         return
 
-    # 2. 加载之前保存的 Logits
+    # 2. loading Logits
     print(f" Loading saved logits from {args.saved_logits}...")
-    saved_logits = torch.load(args.saved_logits, map_location="cpu") # 放在 CPU 对比即可
+    saved_logits = torch.load(args.saved_logits, map_location="cpu")
 
-    # 3. 重新跑一遍模型 (Live Inference)
-    print("🔄 Re-running inference to check consistency...")
+    print(" Re-running inference to check consistency...")
     
-    # 加载数据
+    # loading test set
     _, _, test_loader = get_dataloaders(
         data_root=args.data_root,
         split_dir=args.split_dir,
@@ -29,7 +28,7 @@ def check_reproducibility(args):
         num_workers=args.num_workers
     )
 
-    # 加载模型
+    # loading model
     model = SatelliteResNet(num_classes=10).to(device)
     state_dict = torch.load(args.model_path, map_location=device, weights_only=True)
     model.load_state_dict(state_dict)
@@ -44,11 +43,8 @@ def check_reproducibility(args):
 
     new_logits = torch.cat(new_logits, dim=0)
 
-    # 4. 核心对比：使用 torch.allclose
-    # atol=1e-5 表示允许小数点后5位的误差（浮点数计算会有微小误差，这是正常的）
+    # 4. compare result by torch.allclose
     is_match = torch.allclose(saved_logits, new_logits, atol=1e-5)
-    
-    # 计算最大误差
     diff = (saved_logits - new_logits).abs().max().item()
 
     print("\n" + "="*40)
