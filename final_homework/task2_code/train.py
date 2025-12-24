@@ -105,7 +105,7 @@ def validate(model, loader, criterion, device, epoch_idx, class_names):
 # 4. Main Function
 # --------------------------------------------------------
 def main(args):
-    set_seed(args.seed)
+    set_seed(SEED)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
     save_dir = os.path.join("checkpoints", args.exp_name)
@@ -178,7 +178,7 @@ def main(args):
     plt.title(f"Per-Class Validation Accuracy\n(Augmentation: {args.aug_strength})")
     plt.xlabel("Epochs")
     plt.ylabel("Accuracy")
-    plt.ylim(0, 1.05)
+    plt.ylim(0.6, 1.05)
     plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
@@ -203,7 +203,7 @@ if __name__ == "__main__":
     parser.add_argument('--batch_size', type=int, default=64)
     parser.add_argument('--lr', type=float, default=1e-3)
     parser.add_argument('--weight_decay', type=float, default=1e-2)
-    parser.add_argument('--seed', type=int, default=369)
+    parser.add_argument('--seed', type=int, default=SEED)
     parser.add_argument('--num_workers', type=int, default=2)
 
     args = parser.parse_args()

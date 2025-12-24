@@ -1,4 +1,5 @@
 import torch
+import random
 import numpy as np
 import matplotlib.pyplot as plt
 import os
@@ -8,10 +9,26 @@ from tqdm import tqdm
 from model import SatelliteResNet
 from dataset import get_dataloaders
 
+try:
+    from config import RGB_DATASET_ROOT, SPLITS_ROOT, SEED
+except ImportError:
+    RGB_DATASET_ROOT = "EuroSAT_RGB"
+    SPLITS_ROOT = "splits"
+    SEED = 3719704
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 MEAN = np.array([0.485, 0.456, 0.406])
 STD = np.array([0.229, 0.224, 0.225])
+
+def set_seed(seed=SEED):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    print(f"Seed set to {seed}")
 
 def denormalize(tensor):
     img = tensor.cpu().numpy().transpose((1, 2, 0))
@@ -87,6 +104,9 @@ def plot_top_bottom(samples, title, filename_suffix):
     print(f" Picture saved: {save_name}") 
 
 def main(args):
+
+    set_seed(SEED)
+    
     # 1. Loading Data
     print(" Loading Test Data...")
     _, _, test_loader = get_dataloaders(
@@ -137,8 +157,8 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data_root', type=str, default=".", help='Root dir')
-    parser.add_argument('--split_dir', type=str, default="train_val_test", help='Split dir')
+    parser.add_argument('--data_root', type=str, default=RGB_DATASET_ROOT)
+    parser.add_argument('--split_dir', type=str, default=SPLITS_ROOT)
     parser.add_argument('--model_path', type=str, default="checkpoints/best_model.pth", help='Path to .pth')
     parser.add_argument('--batch_size', type=int, default=64)
     parser.add_argument('--num_workers', type=int, default=2)
