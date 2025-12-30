@@ -201,8 +201,8 @@ if __name__ == "__main__":
     # hyper-parameter
     parser.add_argument('--epochs', type=int, default=20)
     parser.add_argument('--batch_size', type=int, default=64)
-    parser.add_argument('--lr', type=float, default=1e-3)
-    parser.add_argument('--weight_decay', type=float, default=1e-2)
+    parser.add_argument('--lr', type=float, default=1e-4)
+    parser.add_argument('--weight_decay', type=float, default=1e-3)
     parser.add_argument('--seed', type=int, default=SEED)
     parser.add_argument('--num_workers', type=int, default=2)
 
