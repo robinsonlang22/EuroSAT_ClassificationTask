@@ -13,7 +13,6 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 DATASETS_ROOT = PROJECT_ROOT
 
 # INTERNAL PATHS (Do not edit below)
-
 SPLITS_ROOT = PROJECT_ROOT / "splits"
 
 # Dataset paths

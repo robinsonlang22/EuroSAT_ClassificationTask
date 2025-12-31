@@ -62,6 +62,17 @@ def generate_logits(args):
     all_logits = torch.cat(all_logits, dim=0)
     print(f" Generated logits shape: {all_logits.shape}")
 
+    test_txt_path = os.path.join(args.split_dir, "test.txt")
+    all_filenames = []
+    if os.path.exists(test_txt_path):
+        with open(test_txt_path, "r") as f:
+            for line in f:
+                if line.strip():
+                    rel_path = line.strip().split()[0]
+                    all_filenames.append(os.path.basename(rel_path))
+    else:
+        print("Warning: test.txt not found, filenames will be empty!")
+
     print(f"{'Class Name':<25} | {'TPR ':<10}")
     
     overall_acc = 0
@@ -85,6 +96,13 @@ def generate_logits(args):
     torch.save(all_logits, save_path)
     print(f" Logits saved to: {save_path}")
 
+    # 6. Saving Filenames
+    filenames_path = os.path.join(args.output_dir, "test_filenames.txt")
+    with open(filenames_path, "w") as f:
+        for name in all_filenames:
+            f.write(f"{name}\n")
+    print(f" Filenames saved to: {filenames_path}")
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     
@@ -92,7 +110,6 @@ if __name__ == "__main__":
     parser.add_argument('--split_dir', type=str, default=SPLITS_ROOT)
     parser.add_argument('--model_path', type=str, default="checkpoints/mild_run/best_model.pth", help='Path to trained model')
     parser.add_argument('--output_dir', type=str, default="submission", help='Where to save logits')
-    
     parser.add_argument('--batch_size', type=int, default=64)
     parser.add_argument('--num_workers', type=int, default=2)
 

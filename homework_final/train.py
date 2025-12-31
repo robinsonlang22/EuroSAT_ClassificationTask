@@ -209,8 +209,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     experiments = [
-        ("mild",   "mild_run"),    # 第 1 组实验
-        ("strong", "strong_run")   # 第 2 组实验
+        ("mild",   "mild_run"),
+        ("strong", "strong_run")
     ]
 
     print(f" Plan: Running {len(experiments)} experiments sequentially")
@@ -218,14 +218,11 @@ if __name__ == "__main__":
     for strength, exp_name in experiments:
         print(f"\n>>> [STARTING] Experiment: {exp_name} | Augmentation: {strength}")
         
-        # 强制覆盖参数
         args.aug_strength = strength
         args.exp_name = exp_name
-        
-        # 运行主训练逻辑
+     
         main(args)
         
         print(f">>> [FINISHED] Experiment: {exp_name} completed.\n")
 
     print(" All experiments completed successfully!")
-    print(" Check 'checkpoints/' for models and 'runs/' for TensorBoard logs.")
