@@ -195,8 +195,8 @@ if __name__ == "__main__":
     parser.add_argument('--split_dir', type=str, default=SPLITS_ROOT)
     
     # experiment
-    parser.add_argument('--exp_name', type=str, default="experiment_1", help="Name of the run folder")
-    parser.add_argument('--aug_strength', type=str, default="mild", choices=["mild", "strong"], help="Augmentation strength")
+    parser.add_argument('--exp_name', type=str, default="temp_run")
+    parser.add_argument('--aug_strength', type=str, default="mild")
     
     # hyper-parameter
     parser.add_argument('--epochs', type=int, default=20)
@@ -207,4 +207,25 @@ if __name__ == "__main__":
     parser.add_argument('--num_workers', type=int, default=2)
 
     args = parser.parse_args()
-    main(args)
+    
+    experiments = [
+        ("mild",   "mild_run"),    # 第 1 组实验
+        ("strong", "strong_run")   # 第 2 组实验
+    ]
+
+    print(f" Plan: Running {len(experiments)} experiments sequentially")
+
+    for strength, exp_name in experiments:
+        print(f"\n>>> [STARTING] Experiment: {exp_name} | Augmentation: {strength}")
+        
+        # 强制覆盖参数
+        args.aug_strength = strength
+        args.exp_name = exp_name
+        
+        # 运行主训练逻辑
+        main(args)
+        
+        print(f">>> [FINISHED] Experiment: {exp_name} completed.\n")
+
+    print(" All experiments completed successfully!")
+    print(" Check 'checkpoints/' for models and 'runs/' for TensorBoard logs.")
