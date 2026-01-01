@@ -133,7 +133,7 @@ def main(args):
     # 3. Collect Results
     correct, incorrect = collect_results(model, test_loader, class_names)
 
-    # 4. NEW: Per-Class Top/Bottom
+    # 4. Per-Class Top / Bottom
     target_classes = ['Forest', 'Highway', 'River'] 
     
     print(f"\n Generating Plots for specific classes: {target_classes}...")

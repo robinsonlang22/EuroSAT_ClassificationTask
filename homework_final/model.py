@@ -24,9 +24,7 @@ class SatelliteResNet(nn.Module):
     def forward(self, x):
         return self.resnet(x)
 
-# -------------------------------------------------------
 # model quick test
-# -------------------------------------------------------
 if __name__ == "__main__":
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

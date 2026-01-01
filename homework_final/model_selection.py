@@ -19,7 +19,7 @@ def tuning_runner(data_root, split_dir, device):
     search_space = {
         "lr": [1e-3, 5e-4, 1e-4],
         "weight_decay": [1e-4, 1e-3, 1e-2], 
-        "batch_size": [64, 128] # argument is recieved by func get_dataloaders
+        "batch_size": [64, 128]
     }
 
     # groups
@@ -73,7 +73,6 @@ def tuning_runner(data_root, split_dir, device):
                     inputs, labels = inputs.to(device), labels.to(device)
                     outputs = model(inputs)
                     loss = criterion(outputs, labels)
-                    # 累加 Loss
                     val_loss += loss.item() * inputs.size(0)
                     total_samples += inputs.size(0)
             

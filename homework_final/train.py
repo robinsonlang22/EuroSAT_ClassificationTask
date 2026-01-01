@@ -19,9 +19,7 @@ except ImportError:
     SPLITS_ROOT = "splits"
     SEED = 3719704
 
-# --------------------------------------------------------
 # 1. Setup Utilities
-# --------------------------------------------------------
 def set_seed(seed=SEED):
     random.seed(seed)
     np.random.seed(seed)
@@ -31,9 +29,7 @@ def set_seed(seed=SEED):
     torch.backends.cudnn.benchmark = False
     print(f"Seed set to {seed}")
 
-# --------------------------------------------------------
 # 2. Train Loop
-# --------------------------------------------------------
 def train_one_epoch(model, loader, criterion, optimizer, device, epoch_idx):
     model.train()
     running_loss = 0.0
@@ -60,9 +56,7 @@ def train_one_epoch(model, loader, criterion, optimizer, device, epoch_idx):
         
     return running_loss / total, correct / total
 
-# --------------------------------------------------------
-# 3. Validation Loop (带每个类别的准确率)
-# --------------------------------------------------------
+# 3. Validation Loop
 def validate(model, loader, criterion, device, epoch_idx, class_names):
     model.eval()
     running_loss = 0.0
@@ -101,9 +95,7 @@ def validate(model, loader, criterion, device, epoch_idx, class_names):
 
     return avg_loss, total_acc, per_class_acc
 
-# --------------------------------------------------------
 # 4. Main Function
-# --------------------------------------------------------
 def main(args):
     set_seed(SEED)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
