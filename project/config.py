@@ -1,11 +1,11 @@
 from pathlib import Path
 
-# CONFIGURATION (Please set these TWO paths MAUALLY!)
+# CONFIGURATION (Please set these TWO paths manually!)
 
 # 1. PROJECT ROOT
 # The folder containing 'splits', 'checkpoints' etc.
-# We use automatic detection by default, but you should change it manually if required.
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+# We use automatic detection by default, but you can change it manually if required.
+PROJECT_ROOT = Path(__file__).resolve().parent
 
 # 2. DATASET ROOT
 # The folder containing 'EuroSAT_RGB' and 'EuroSAT_MS'.
@@ -13,6 +13,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DATASETS_ROOT = PROJECT_ROOT
 
 # INTERNAL PATHS (Do not edit below)
+
 SPLITS_ROOT = PROJECT_ROOT / "splits"
 
 # Dataset paths

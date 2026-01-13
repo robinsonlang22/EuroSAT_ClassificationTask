@@ -51,6 +51,26 @@ def stratified_split_per_class(items, train_ratio, val_ratio, test_ratio, seed):
         test_files.extend((p, cls) for p in test_cls)
     return train_files, val_files, test_files
 
+def verify_disjointness(train_files, val_files, test_files, total_items):
+    """
+    We verify that the sets of paths do not intersect and that their union equals all elements
+    """
+    train_set = set(p for p, _ in train_files)
+    val_set = set(p for p, _ in val_files)
+    test_set = set(p for p, _ in test_files)
+
+    assert train_set.isdisjoint(val_set), "Train and Val intersect!"
+    assert train_set.isdisjoint(test_set), "Train and Test intersect!"
+    assert val_set.isdisjoint(test_set), "Val and Test intersect!"
+
+    union = train_set | val_set | test_set
+    all_paths = set(p for p, _ in total_items)
+
+    assert len(union) == len(all_paths), (
+        f"The size of the union ({len(union)}) is not equal to the number of all files ({len(all_paths)})"
+    )
+    print("OK! Splits are disjoint and cover all files :)")
+
 def save_split(split_files, split_name, output_dir: Path):
     output_dir.mkdir(parents=True, exist_ok=True)
     out_path = output_dir / f"{split_name}.txt"
@@ -67,6 +87,8 @@ def main():
     train_f, val_f, test_f = stratified_split_per_class(
         all_items, TRAIN_RATIO, VAL_RATIO, TEST_RATIO, SEED
     )
+
+    verify_disjointness(train_f, val_f, test_f, all_items)
     
     save_split(train_f, "train", SPLITS_ROOT)
     save_split(val_f, "val", SPLITS_ROOT)
